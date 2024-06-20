@@ -1,0 +1,37 @@
+Comandos ejecutados para las pruebas
+
+Crea el topic
+
+docker exec -it d51a669d460b /opt/kafka/bin/kafka-topics.sh --create --topic kafka2g-test-1 --bootstrap-server localhost:9094 --partitions 3 --replication-factor 1
+
+Inicia carga de 1MM de registros de 100 bytes a 10k tps 
+
+docker exec -it d51a669d460b /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka2g-test-1 --num-records 1000000 --record-size 100 --throughput 10000 --producer-props bootstrap.servers=localhost:9094
+
+Inicia consumo de 1MM de registros a 1 threads
+
+docker exec -it d51a669d460b /opt/kafka/bin/kafka-consumer-perf-test.sh --broker-list localhost:9094 --messages 1000000 --topic kafka2g-test-1 --threads 1
+
+Inicia carga de 2MM de registros de 1KB a 20k tps 
+
+docker exec -it d51a669d460b /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka2g-test-1 --num-records 2000000 --record-size 1000 --throughput 20000 --producer-props bootstrap.servers=localhost:9094
+
+Inicia consumo de 2MM de registros a 1 threads
+
+docker exec -it d51a669d460b /opt/kafka/bin/kafka-consumer-perf-test.sh --broker-list localhost:9094 --messages 2000000 --topic kafka2g-test-1 --threads 1
+
+Inicia carga de 2MM de registros de 1KB pero a 50K tps
+
+docker exec -it d51a669d460b /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka2g-test-1 --num-records 2000000 --record-size 1000 --throughput 50000 --producer-props bootstrap.servers=localhost:9094
+
+Inicia consumo de 2MM de registros a 1 threads
+
+docker exec -it d51a669d460b /opt/kafka/bin/kafka-consumer-perf-test.sh --broker-list localhost:9094 --messages 2000000 --topic kafka2g-test-1 --threads 1
+
+Cambiar la retencion de mensajes del topic
+
+docker exec -it d51a669d460b /opt/kafka/bin/kafka-configs.sh --zookeeper zookeeper:2181 --entity-type topics --alter --entity-name kafka2g-test-1 --add-config retention.ms=1000
+
+Con esto vemos el tamaño del topic
+
+docker exec -it d51a669d460b /opt/kafka/bin/kafka-log-dirs.sh --describe --bootstrap-server localhost:9094 --topic-list kafka2g-test-1

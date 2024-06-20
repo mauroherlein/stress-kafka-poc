@@ -1,0 +1,113 @@
+version: '2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+  #node_exporter1:
+  #  image: prom/node-exporter
+  #  ports:
+  #    - "9100:9100"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2g
+        reservations:
+          cpus: '0.0001'
+          memory: 20M
+  cadvisor1:
+    image: google/cadvisor:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    deploy:
+      resources:
+        limits:
+          cpus: '10'
+          memory: 10g
+        reservations:
+          cpus: '0.0001'
+          memory: 20M
+  kafka2g:
+    image: wurstmeister/kafka:latest
+    ports:
+      - target: 9094
+        published: 9094
+        protocol: tcp
+        mode: host
+    environment:
+      HOSTNAME_COMMAND: "docker info | grep ^Name: | cut -d' ' -f 2"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://_{HOSTNAME_COMMAND}:9094
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+    #  KAFKA_JMX_PORT: 7071
+    #  KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -javaagent:/usr/app/jmx_prometheus_javaagent.jar=7071:/etc/jmx-exporter/kafka-jmx-exporter.yml"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    #  - ./kafka-jmx-exporter.yml:/etc/jmx-exporter/kafka-jmx-exporter.yml
+    #  - ./jmx_prometheus_javaagent-1.0.1.jar:/usr/app/jmx_prometheus_javaagent.jar
+    #command: >
+    #  sh -c 'export KAFKA_OPTS="$KAFKA_OPTS -javaagent:/usr/app/jmx_prometheus_javaagent.jar=7071:/etc/jmx-exporter/kafka-jmx-exporter.yml" &&
+    #         /etc/confluent/docker/run'
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2g
+        reservations:
+          cpus: '0.0001'
+          memory: 20M
+#  kafka4g:
+#    image: wurstmeister/kafka:latest
+#    ports:
+#      - target: 9095
+#        published: 9095
+#        protocol: tcp
+#        mode: host
+#    environment:
+#      HOSTNAME_COMMAND: "docker info | grep ^Name: | cut -d' ' -f 2"
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+#      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9093,OUTSIDE://_{HOSTNAME_COMMAND}:9095
+#      KAFKA_LISTENERS: INSIDE://:9093,OUTSIDE://:9095
+#      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '4'
+#          memory: 4g
+#        reservations:
+#          cpus: '0.0001'
+#          memory: 20M
+#  kafka8g:
+#   image: wurstmeister/kafka:latest
+#    ports:
+#      - target: 9096
+#        published: 9096
+#        protocol: tcp
+#        mode: host
+#    environment:
+#      HOSTNAME_COMMAND: "docker info | grep ^Name: | cut -d' ' -f 2"
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+#      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9091,OUTSIDE://_{HOSTNAME_COMMAND}:9096
+#      KAFKA_LISTENERS: INSIDE://:9091,OUTSIDE://:9096
+#      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '8'
+#          memory: 8g
+#        reservations:
+#          cpus: '0.0001'
+#          memory: 20M    
