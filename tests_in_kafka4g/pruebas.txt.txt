@@ -1,0 +1,97 @@
+KAFKA4G
+
+0a31a4ff76cd
+
+docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-configs.sh --zookeeper zookeeper:2181 --entity-type topics --alter --entity-name kafka2g-test-1 --add-config retention.ms=1000
+
+$startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka4g-test-1 --num-records 1000000 --record-size 100 --throughput 10000 --producer-props bootstrap.servers=localhost:9095; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+
+Inicia carga de 1MM de registros de 100 bytes a 10k tps 
+
+$startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka4g-test-1 --num-records 1000000 --record-size 100 --throughput 10000 --producer-props bootstrap.servers=localhost:9095; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+Fecha y hora de inicio: 06/20/2024 21:32:19
+50002 records sent, 9998.4 records/sec (0.95 MB/sec), 1.7 ms avg latency, 221.0 ms max latency.
+50020 records sent, 10000.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 4.0 ms max latency.
+50020 records sent, 10000.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50000 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50000 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.9 ms avg latency, 94.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 4.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 1.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 4.0 ms max latency.
+50020 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 7.3 ms avg latency, 232.0 ms max latency.
+50000 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 1.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 1.0 ms max latency.
+50020 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 1.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 4.5 ms avg latency, 175.0 ms max latency.
+1000000 records sent, 9999.500025 records/sec (0.95 MB/sec), 0.83 ms avg latency, 232.00 ms max latency, 0 ms 50th, 1 ms 95th, 1 ms 99th, 158 ms 99.9th.
+
+What's next?
+  Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug 0a31a4ff76cd
+  Learn more at https://docs.docker.com/go/debug-cli/
+Fecha y hora de fin: 06/20/2024 21:34:00
+
+Rango de tiempo del CPU desde grafana > CPU Usage-data-2024-06-20 21_36_26
+Rango de tiempo del MEM desde grafana > Memory Usage-data-2024-06-20 21_36_19
+Imagen desde grafana screen capture > Screenshot 2024-06-20 213701
+
+Inicia carga de 2MM de registros de 1KB a 20k tps 
+
+PS C:\WINDOWS\system32> $startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka4g-test-1 --num-records 2000000 --record-size 1000 --throughput 20000 --producer-props bootstrap.servers=localhost:9095; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+Fecha y hora de inicio: 06/20/2024 21:39:07
+100002 records sent, 20000.4 records/sec (19.07 MB/sec), 0.9 ms avg latency, 194.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+100020 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+100040 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 5.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 238.5 ms avg latency, 1197.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 8.0 ms max latency.
+54760 records sent, 6936.9 records/sec (6.62 MB/sec), 0.3 ms avg latency, 5157.0 ms max latency.
+203140 records sent, 40628.0 records/sec (38.75 MB/sec), 734.7 ms avg latency, 5158.0 ms max latency.
+99980 records sent, 19996.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 2.0 ms max latency.
+100060 records sent, 20008.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 2.0 ms max latency.
+43496 records sent, 5076.0 records/sec (4.84 MB/sec), 62.5 ms avg latency, 6387.0 ms max latency.
+4896 records sent, 957.9 records/sec (0.91 MB/sec), 7598.3 ms avg latency, 11255.0 ms max latency.
+325268 records sent, 65040.6 records/sec (62.03 MB/sec), 1017.9 ms avg latency, 11360.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 2.0 ms max latency.
+2000000 records sent, 19999.400018 records/sec (19.07 MB/sec), 272.22 ms avg latency, 11360.00 ms max latency, 0 ms 50th, 269 ms 95th, 10392 ms 99th, 11245 ms 99.9th.
+
+What's next?
+  Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug 0a31a4ff76cd
+  Learn more at https://docs.docker.com/go/debug-cli/
+Fecha y hora de fin: 06/20/2024 21:40:48
+
+Rango de tiempo del CPU desde grafana > CPU Usage-data-2024-06-20 21_43_22
+Rango de tiempo del MEM desde grafana > Memory Usage-data-2024-06-20 21_43_14
+Imagen desde grafana screen capture > Screenshot 2024-06-20 214253
+
+Inicia carga de 2MM de registros de 1KB a 50k tps 
+
+$startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka4g-test-1 --num-records 2000000 --record-size 1000 --throughput 50000 --producer-props bootstrap.servers=localhost:9095; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+Fecha y hora de inicio: 06/20/2024 21:47:24
+250002 records sent, 49990.4 records/sec (47.67 MB/sec), 2.1 ms avg latency, 210.0 ms max latency.
+250150 records sent, 50020.0 records/sec (47.70 MB/sec), 0.3 ms avg latency, 3.0 ms max latency.
+250000 records sent, 50000.0 records/sec (47.68 MB/sec), 0.3 ms avg latency, 1.0 ms max latency.
+250100 records sent, 50010.0 records/sec (47.69 MB/sec), 0.3 ms avg latency, 3.0 ms max latency.
+250044 records sent, 49998.8 records/sec (47.68 MB/sec), 0.3 ms avg latency, 2.0 ms max latency.
+218874 records sent, 43774.8 records/sec (41.75 MB/sec), 21.8 ms avg latency, 629.0 ms max latency.
+258508 records sent, 40072.5 records/sec (38.22 MB/sec), 303.1 ms avg latency, 1829.0 ms max latency.
+7968 records sent, 1465.0 records/sec (1.40 MB/sec), 3770.9 ms avg latency, 7187.0 ms max latency.
+2000000 records sent, 45321.670557 records/sec (43.22 MB/sec), 192.68 ms avg latency, 8541.00 ms max latency, 0 ms 50th, 649 ms 95th, 8363 ms 99th, 8514 ms 99.9th.
+
+What's next?
+  Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug 0a31a4ff76cd
+  Learn more at https://docs.docker.com/go/debug-cli/
+Fecha y hora de fin: 06/20/2024 21:48:09
+
+Rango de tiempo del CPU desde grafana > CPU Usage-data-2024-06-20 21_53_29
+Rango de tiempo del MEM desde grafana > Memory Usage-data-2024-06-20 21_53_35
+Imagen desde grafana screen capture > Screenshot 2024-06-20 215251

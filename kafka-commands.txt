@@ -35,3 +35,194 @@ docker exec -it d51a669d460b /opt/kafka/bin/kafka-configs.sh --zookeeper zookeep
 Con esto vemos el tamaño del topic
 
 docker exec -it d51a669d460b /opt/kafka/bin/kafka-log-dirs.sh --describe --bootstrap-server localhost:9094 --topic-list kafka2g-test-1
+
+
+comandos para las pruebas en el 4g 
+
+
+docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-topics.sh --create --topic kafka4g-test-1 --bootstrap-server localhost:9095 --partitions 3 --replication-factor 1
+Created topic kafka4g-test-1.
+
+docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-log-dirs.sh --describe --bootstrap-server localhost:9095 --topic-list kafka4g-test-1
+Querying brokers for log directories information
+Received log directory information from brokers 1007
+{"version":1,"brokers":[{"broker":1007,"logDirs":[{"logDir":"/kafka/kafka-logs-0a31a4ff76cd","error":null,"partitions":[{"partition":"kafka4g-test-1-1","size":0,"offsetLag":0,"isFuture":false},{"partition":"kafka4g-test-1-0","size":0,"offsetLag":0,"isFuture":false},{"partition":"kafka4g-test-1-2","size":0,"offsetLag":0,"isFuture":false}]}]}]}
+
+exec at 19:52
+docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka4g-test-1 --num-records 1000000 --record-size 100 --throughput 10000 --producer-props bootstrap.servers=localhost:9095
+fin 19:54
+
+output
+
+PS C:\WINDOWS\system32> docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka4g-test-1 --num-records 1000000 --record-size 100 --throughput 10000 --producer-props bootstrap.servers=localhost:9095
+49982 records sent, 9988.4 records/sec (0.95 MB/sec), 1.9 ms avg latency, 223.0 ms max latency.
+50060 records sent, 10012.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 6.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 9.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 10.0 ms max latency.
+50000 records sent, 10000.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 16.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 24.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.3 ms avg latency, 42.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50020 records sent, 10002.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 7.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 15.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 2.2 ms avg latency, 141.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 1.2 ms avg latency, 101.0 ms max latency.
+50009 records sent, 9999.8 records/sec (0.95 MB/sec), 0.2 ms avg latency, 9.0 ms max latency.
+49991 records sent, 9998.2 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 4.0 ms max latency.
+50020 records sent, 10002.0 records/sec (0.95 MB/sec), 0.3 ms avg latency, 31.0 ms max latency.
+50000 records sent, 9998.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 1.0 ms max latency.
+1000000 records sent, 9999.700009 records/sec (0.95 MB/sec), 0.42 ms avg latency, 223.00 ms max latency, 0 ms 50th, 1 ms 95th, 1 ms 99th, 73 ms 99.9th.
+
+
+docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-consumer-perf-test.sh --broker-list localhost:9095 --messages 1000000 --topic kafka4g-test-1 --threads 1
+algo anduvo mal aca
+
+docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka4g-test-1 --num-records 2000000 --record-size 1000 --throughput 20000 --producer-props bootstrap.servers=localhost:9095
+
+
+docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka4g-test-1 --num-records 2000000 --record-size 1000 --throughput 20000 --producer-props bootstrap.servers=localhost:9095
+
+100002 records sent, 19996.4 records/sec (19.07 MB/sec), 4.9 ms avg latency, 222.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.3 ms avg latency, 17.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 5.0 ms max latency.
+99980 records sent, 19996.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 6.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 1.3 ms avg latency, 85.0 ms max latency.
+100020 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+100040 records sent, 20004.0 records/sec (19.08 MB/sec), 0.4 ms avg latency, 45.0 ms max latency.
+99980 records sent, 19996.0 records/sec (19.07 MB/sec), 0.3 ms avg latency, 34.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 21.0 ms max latency.
+100040 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 5.0 ms max latency.
+99980 records sent, 19996.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.7 ms avg latency, 67.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 4.0 ms max latency.
+100020 records sent, 20000.0 records/sec (19.07 MB/sec), 0.8 ms avg latency, 73.0 ms max latency.
+100040 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 2.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 0.7 ms avg latency, 55.0 ms max latency.
+100040 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 4.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 7.0 ms max latency.
+100020 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 11.0 ms max latency.
+2000000 records sent, 19999.200032 records/sec (19.07 MB/sec), 0.59 ms avg latency, 222.00 ms max latency, 0 ms 50th, 1 ms 95th, 4 ms 99th, 88 ms 99.9th.
+
+$startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka4g-test-1 --num-records 2000000 --record-size 1000 --throughput 50000 --producer-props bootstrap.servers=localhost:9095; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+
+
+prueba con 50mil
+
+docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka4g-test-1 --num-records 2000000 --record-size 1000 --throughput 50000 --producer-props bootstrap.servers=localhost:9095
+
+
+$startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it 0a31a4ff76cd /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka4g-test-1 --num-records 2000000 --record-size 1000 --throughput 50000 --producer-props bootstrap.servers=localhost:9095; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+Fecha y hora de inicio: 06/20/2024 20:22:42
+249952 records sent, 49990.4 records/sec (47.67 MB/sec), 1.3 ms avg latency, 157.0 ms max latency.
+250022 records sent, 50004.4 records/sec (47.69 MB/sec), 0.3 ms avg latency, 23.0 ms max latency.
+249978 records sent, 49995.6 records/sec (47.68 MB/sec), 1.1 ms avg latency, 82.0 ms max latency.
+250100 records sent, 50010.0 records/sec (47.69 MB/sec), 53.0 ms avg latency, 421.0 ms max latency.
+246100 records sent, 49161.0 records/sec (46.88 MB/sec), 1.2 ms avg latency, 85.0 ms max latency.
+254300 records sent, 50860.0 records/sec (48.50 MB/sec), 1.2 ms avg latency, 86.0 ms max latency.
+250100 records sent, 50010.0 records/sec (47.69 MB/sec), 0.3 ms avg latency, 3.0 ms max latency.
+Error response from daemon: No such exec instance: 1344c6b3308ce772162aa6c55c46d15696cc0a515a2a8f8bb4f7f9cd12d0cbb1 --> se cayo todo aca 
+
+unexpected EOF
+
+
+
+KAFKA2G
+
+Inicia carga de 1MM de registros de 100 bytes a 10k tps 
+
+$startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it d51a669d460b /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka2g-test-1 --num-records 1000000 --record-size 100 --throughput 10000 --producer-props bootstrap.servers=localhost:9094; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+Fecha y hora de inicio: 06/20/2024 22:34:36
+49982 records sent, 9996.4 records/sec (0.95 MB/sec), 2.1 ms avg latency, 249.0 ms max latency.
+50030 records sent, 10002.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 6.0 ms max latency.
+50020 records sent, 10002.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 8.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 4.0 ms max latency.
+50020 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 4.0 ms max latency.
+50020 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 4.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 5.0 ms max latency.
+50000 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 4.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50000 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 4.0 ms max latency.
+50020 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 14.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 1.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 4.0 ms max latency.
+50020 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 4.0 ms max latency.
+50000 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 4.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 6.0 ms max latency.
+1000000 records sent, 9999.500025 records/sec (0.95 MB/sec), 0.24 ms avg latency, 249.00 ms max latency, 0 ms 50th, 1 ms 95th, 1 ms 99th, 33 ms 99.9th.
+
+Rango de tiempo del CPU desde grafana > CPU Usage-data-2024-06-20 22_37_46
+Rango de tiempo del MEM desde grafana > Memory Usage-data-2024-06-20 22_37_52
+Imagen desde grafana screen capture > Screenshot 2024-06-20 223735
+
+Inicia carga de 2MM de registros de 1KB a 20k tps 
+
+$startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it d51a669d460b /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka2g-test-1 --num-records 2000000 --record-size 1000 --throughput 20000 --producer-props bootstrap.servers=localhost:9094; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+Fecha y hora de inicio: 06/20/2024 22:38:40
+100002 records sent, 20000.4 records/sec (19.07 MB/sec), 3.2 ms avg latency, 190.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+100040 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 4.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 4.0 ms max latency.
+100020 records sent, 20000.0 records/sec (19.07 MB/sec), 0.9 ms avg latency, 44.0 ms max latency.
+28756 records sent, 4450.0 records/sec (4.24 MB/sec), 0.4 ms avg latency, 5026.0 ms max latency.
+200504 records sent, 40100.8 records/sec (38.24 MB/sec), 797.7 ms avg latency, 5026.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 14.0 ms max latency.
+100040 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 9.0 ms max latency.
+100016 records sent, 20003.2 records/sec (19.08 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+100024 records sent, 20000.8 records/sec (19.07 MB/sec), 0.2 ms avg latency, 4.0 ms max latency.
+100019 records sent, 20003.8 records/sec (19.08 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+99997 records sent, 19999.4 records/sec (19.07 MB/sec), 0.2 ms avg latency, 5.0 ms max latency.
+100024 records sent, 20000.8 records/sec (19.07 MB/sec), 0.6 ms avg latency, 46.0 ms max latency.
+100012 records sent, 20002.4 records/sec (19.08 MB/sec), 0.5 ms avg latency, 48.0 ms max latency.
+99968 records sent, 19993.6 records/sec (19.07 MB/sec), 254.1 ms avg latency, 1520.0 ms max latency.
+100020 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+2000000 records sent, 19999.600008 records/sec (19.07 MB/sec), 93.09 ms avg latency, 5026.00 ms max latency, 0 ms 50th, 236 ms 95th, 4180 ms 99th, 4944 ms 99.9th.
+
+What's next?
+  Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug d51a669d460b
+  Learn more at https://docs.docker.com/go/debug-cli/
+Fecha y hora de fin: 06/20/2024 22:40:21
+
+Rango de tiempo del CPU desde grafana > CPU Usage-data-2024-06-20 22_42_21
+Rango de tiempo del MEM desde grafana > Memory Usage-data-2024-06-20 22_42_26
+Imagen desde grafana screen capture > Screenshot 2024-06-20 224308
+
+Inicia carga de 2MM de registros de 1KB a 50k tps 
+
+$startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it d51a669d460b /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka2g-test-1 --num-records 2000000 --record-size 1000 --throughput 50000 --producer-props bootstrap.servers=localhost:9094; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+Fecha y hora de inicio: 06/20/2024 22:46:48
+250002 records sent, 49990.4 records/sec (47.67 MB/sec), 8.7 ms avg latency, 188.0 ms max latency.
+250049 records sent, 50009.8 records/sec (47.69 MB/sec), 0.3 ms avg latency, 8.0 ms max latency.
+250001 records sent, 50000.2 records/sec (47.68 MB/sec), 0.3 ms avg latency, 8.0 ms max latency.
+250100 records sent, 50010.0 records/sec (47.69 MB/sec), 0.3 ms avg latency, 8.0 ms max latency.
+187814 records sent, 26953.8 records/sec (25.71 MB/sec), 0.4 ms avg latency, 3213.0 ms max latency.
+64580 records sent, 4838.9 records/sec (4.61 MB/sec), 1618.9 ms avg latency, 13149.0 ms max latency.
+2000000 records sent, 44937.761201 records/sec (42.86 MB/sec), 334.68 ms avg latency, 13908.00 ms max latency, 1 ms 50th, 212 ms 95th, 13884 ms 99th, 13906 ms 99.9th.
+
+Rango de tiempo del CPU desde grafana > CPU Usage-data-2024-06-20 22_42_21
+Rango de tiempo del MEM desde grafana > Memory Usage-data-2024-06-20 22_42_26
+Imagen desde grafana screen capture > Screenshot 2024-06-20 224308
+
+
+
+KAFKA8G
+Inicia carga de 1MM de registros de 100 bytes a 10k tps -> 302.00 ms max latency
+Inicia carga de 2MM de registros de 1KB a 20k tps -> 1632.00 ms max latency
+Inicia carga de 2MM de registros de 1KB a 50k tps -> 6702.00 ms max latency
+
+KAFKA4G
+Inicia carga de 1MM de registros de 100 bytes a 10k tps -> 232.00 ms max latency
+Inicia carga de 2MM de registros de 1KB a 20k tps -> 11360.00 ms max latency
+Inicia carga de 2MM de registros de 1KB a 50k tps -> 8541.00 ms max latency
+
+KAFKA2G
+Inicia carga de 1MM de registros de 100 bytes a 10k tps -> 246.00 ms max latency
+Inicia carga de 2MM de registros de 1KB a 20k tps -> 17531.00 ms max latency
+Inicia carga de 2MM de registros de 1KB a 50k tps -> 26171.00 ms max latency

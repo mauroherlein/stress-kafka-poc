@@ -1,0 +1,101 @@
+KAFKA8G
+
+docker exec -it b8b1b7870cb5 /opt/kafka/bin/kafka-topics.sh --create --topic kafka8g-test-1 --bootstrap-server localhost:9096 --partitions 3 --replication-factor 1
+Created topic kafka8g-test-1.
+
+docker exec -it b8b1b7870cb5 /opt/kafka/bin/kafka-log-dirs.sh --describe --bootstrap-server localhost:9096 --topic-list kafka8g-test-1
+Querying brokers for log directories information
+Received log directory information from brokers 1009
+{"version":1,"brokers":[{"broker":1009,"logDirs":[{"logDir":"/kafka/kafka-logs-b8b1b7870cb5","error":null,"partitions":[{"partition":"kafka8g-test-1-2","size":0,"offsetLag":0,"isFuture":false},{"partition":"kafka8g-test-1-1","size":0,"offsetLag":0,"isFuture":false},{"partition":"kafka8g-test-1-0","size":0,"offsetLag":0,"isFuture":false}]}]}]}
+
+Inicia carga de 1MM de registros de 100 bytes a 10k tps 
+
+PS C:\WINDOWS\system32> $startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it b8b1b7870cb5 /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka8g-test-1 --num-records 1000000 --record-size 100 --throughput 10000 --producer-props bootstrap.servers=localhost:9096; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+Fecha y hora de inicio: 06/20/2024 20:39:59
+50002 records sent, 10000.4 records/sec (0.95 MB/sec), 1.4 ms avg latency, 179.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+50020 records sent, 10000.0 records/sec (0.95 MB/sec), 0.2 ms avg latency, 2.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50000 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 1.0 ms max latency.
+50010 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50000 records sent, 9998.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50020 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50020 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50020 records sent, 10002.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 1.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 4.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50000 records sent, 10000.0 records/sec (0.95 MB/sec), 9.5 ms avg latency, 302.0 ms max latency.
+50000 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 3.0 ms max latency.
+50000 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+50000 records sent, 9998.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 1.0 ms max latency.
+50010 records sent, 10000.0 records/sec (0.95 MB/sec), 0.1 ms avg latency, 2.0 ms max latency.
+1000000 records sent, 9999.800004 records/sec (0.95 MB/sec), 0.67 ms avg latency, 302.00 ms max latency, 0 ms 50th, 1 ms 95th, 1 ms 99th, 206 ms 99.9th.
+
+What's next?
+  Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug b8b1b7870cb5
+  Learn more at https://docs.docker.com/go/debug-cli/
+Fecha y hora de fin: 06/20/2024 20:41:40
+
+Rango de tiempo del CPU desde grafana > CPU Usage-data-2024-06-20 20_58_55
+Rango de tiempo del MEM desde grafana > Memory Usage-data-2024-06-20 20_59_04
+Imagen desde grafana screen capture > Screenshot 2024-06-20 205931 
+
+Inicia carga de 2MM de registros de 1KB a 20k tps 
+
+$startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it b8b1b7870cb5 /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka8g-test-1 --num-records 2000000 --record-size 1000 --throughput 20000 --producer-props bootstrap.servers=localhost:9096; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+
+Fecha y hora de inicio: 06/20/2024 20:45:16
+100002 records sent, 20000.4 records/sec (19.07 MB/sec), 0.9 ms avg latency, 193.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+100040 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 4.0 ms max latency.
+100020 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+100020 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 4.0 ms max latency.
+100020 records sent, 20000.0 records/sec (19.07 MB/sec), 6.2 ms avg latency, 210.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 3.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 24.2 ms avg latency, 476.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 2.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 2.0 ms max latency.
+100020 records sent, 20000.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 76.7 ms avg latency, 766.0 ms max latency.
+100000 records sent, 20000.0 records/sec (19.07 MB/sec), 1.5 ms avg latency, 112.0 ms max latency.
+100000 records sent, 19996.0 records/sec (19.07 MB/sec), 0.2 ms avg latency, 13.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+100040 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 1.0 ms max latency.
+100020 records sent, 20004.0 records/sec (19.08 MB/sec), 0.2 ms avg latency, 2.0 ms max latency.
+93244 records sent, 16615.1 records/sec (15.85 MB/sec), 22.6 ms avg latency, 932.0 ms max latency.
+2000000 records sent, 19999.600008 records/sec (19.07 MB/sec), 21.26 ms avg latency, 1632.00 ms max latency, 0 ms 50th, 1 ms 95th, 763 ms 99th, 1518 ms 99.9th.
+
+What's next?
+  Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug b8b1b7870cb5
+  Learn more at https://docs.docker.com/go/debug-cli/
+Fecha y hora de fin: 06/20/2024 20:47:00
+
+Rango de tiempo del CPU desde grafana > CPU Usage-data-2024-06-20 21_09_07
+Rango de tiempo del MEM desde grafana > Memory Usage-data-2024-06-20 21_09_24
+Imagen desde grafana screen capture > Screenshot 2024-06-20 210937
+
+Inicia carga de 2MM de registros de 1KB a 50k tps 
+
+$startTime = Get-Date; Write-Output "Fecha y hora de inicio: $startTime"; docker exec -it b8b1b7870cb5 /opt/kafka/bin/kafka-producer-perf-test.sh --topic kafka8g-test-1 --num-records 2000000 --record-size 1000 --throughput 50000 --producer-props bootstrap.servers=localhost:9096; $endTime = Get-Date; Write-Output "Fecha y hora de fin: $endTime"
+Fecha y hora de inicio: 06/20/2024 20:49:30
+249952 records sent, 49990.4 records/sec (47.67 MB/sec), 1.7 ms avg latency, 188.0 ms max latency.
+250000 records sent, 50000.0 records/sec (47.68 MB/sec), 0.3 ms avg latency, 2.0 ms max latency.
+250100 records sent, 50010.0 records/sec (47.69 MB/sec), 0.3 ms avg latency, 9.0 ms max latency.
+250050 records sent, 50000.0 records/sec (47.68 MB/sec), 0.3 ms avg latency, 3.0 ms max latency.
+135442 records sent, 14416.4 records/sec (13.75 MB/sec), 118.4 ms avg latency, 6674.0 ms max latency.
+584458 records sent, 116868.2 records/sec (111.45 MB/sec), 398.8 ms avg latency, 6702.0 ms max latency.
+250090 records sent, 50018.0 records/sec (47.70 MB/sec), 23.9 ms avg latency, 460.0 ms max latency.
+2000000 records sent, 49995.000500 records/sec (47.68 MB/sec), 127.85 ms avg latency, 6702.00 ms max latency, 0 ms 50th, 77 ms 95th, 6338 ms 99th, 6660 ms 99.9th.
+
+What's next?
+  Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug b8b1b7870cb5
+  Learn more at https://docs.docker.com/go/debug-cli/
+Fecha y hora de fin: 06/20/2024 20:50:11
+
+Rango de tiempo del CPU desde grafana > CPU Usage-data-2024-06-20 21_11_09
+Rango de tiempo del MEM desde grafana > Memory Usage-data-2024-06-20 21_11_17
+Imagen desde grafana screen capture > Screenshot 2024-06-20 211135
+
